@@ -1,0 +1,51 @@
+pai(joao, antonio).
+pai(joao, marcos).
+pai(joao, livia).
+pai(antonio, augusto).
+pai(antonio, carlos).
+pai(antonio, pedro).
+pai(marcos, vinicius).
+pai(marcos, pietra).
+pai(andre, marta).
+pai(andre, jose).
+
+mae(maria, antonio).
+mae(maria, marcos).
+mae(maria, livia).
+mae(livia, marta).
+mae(livia, jose).
+mae(ana, augusto).
+mae(ana, carlos).
+mae(ana, pedro).
+mae(sofia, vinicius).
+
+casado(antonio, ana).
+casado(ana, antonio).
+casado(marcos, sofia).
+casado(sofia, marcos).
+casado(livia, andre).
+casado(andre, livia).
+
+filho(X, Y) :- pai(Y, X).
+filho(X, Y) :- mae(Y, X).
+
+avo(X, Y) :- pai(X, Z), pai(Z, Y).
+avo(X, Y) :- mae(X, Z), mae(Z, Y).
+avo(X, Y) :- pai(X, Z), mae(Z, Y).
+avo(X, Y) :- mae(X, Z), pai(Z, Y).
+
+irmao(X, Y) :- pai(P, X), pai(P, Y), X \= Y.
+irmao(X, Y) :- mae(M, X), mae(M, Y), X \= Y.
+
+primo(X, Y) :- pai(P1, X), pai(P2, Y), irmao(P1, P2).
+primo(X, Y) :- mae(M1, X), mae(M2, Y), irmao(M1, M2).
+
+tio(X, Y) :- pai(P, Y), irmao(X, P).
+tio(X, Y) :- mae(M, Y), irmao(X, M).
+tio(X, Y) :- pai(P, Y), irmao(I, P), casado(X, I).
+tio(X, Y) :- mae(M, Y), irmao(I, M), casado(X, I).
+
+neto(X, Y):- pai(Y, P), pai(P, X).
+neto(X, Y):- pai(Y, M), mae(M, X).
+neto(X, Y):- mae(Y, P), pai(P, X).
+neto(X, Y):- mae(Y, M), mae(M, X).
