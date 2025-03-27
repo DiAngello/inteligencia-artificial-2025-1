@@ -1,0 +1,123 @@
+% Main
+main :-
+    statistics(cputime, T1),
+    modelo([A1, A2, A3, A4, A5]),
+    imprime_lista([A1, A2, A3, A4, A5]),
+
+    statistics(cputime, T2),
+    Tempo is T2 - T1,
+    format('\n T1: ~f \t T2: ~f  msec', [T1, T2]),
+    format('\n Tempo total: ~10f  msec', Tempo).
+
+% Modelo
+modelo([
+    (M1, N1, Me1, J1, Ma1, S1),
+    (M2, N2, Me2, J2, Ma2, S2),
+    (M3, N3, Me3, J3, Ma3, S3),
+    (M4, N4, Me4, J4, Ma4, S4),
+    (M5, N5, Me5, J5, Ma5, S5)
+]) :-
+    mochila(M1), mochila(M2), mochila(M3), mochila(M4), mochila(M5),
+    alldifferent([M1, M2, M3, M4, M5]),
+
+    nome(N1), nome(N2), nome(N3), nome(N4), nome(N5),
+    N5 == lenin,
+    N1 == otavio,
+
+    alldifferent([N1, N2, N3, N4, N5]),
+
+    ((N4 == will, M3 == branca);
+     (N3 == will, M2 == branca);
+     (N2 == will, M1 == branca)),
+
+    mes(Me1), mes(Me2), mes(Me3), mes(Me4), mes(Me5),
+    alldifferent([Me1, Me2, Me3, Me4, Me5]),
+
+    ((Me5 == maio, (M4==azul ; M3==azul ; M2==azul ; M1==azul));
+     (Me4 == maio, (M3==azul ; M2==azul ; M1==azul));
+     (Me3 == maio, (M2==azul ; M1==azul));
+     (Me2 == maio, M1 == azul)),
+
+    ((Me1 == janeiro, Me2 == setembro);
+     (Me2 == janeiro, (Me1 == setembro; Me3 == setembro));
+     (Me3 == janeiro, (Me2 == setembro; Me4 == setembro));
+     (Me4 == janeiro, (Me5 == setembro; Me5 == setembro));
+     (Me5 == janeiro, Me4 == setembro)),
+
+    ((M1 == azul, Me1 == janeiro);
+     (M2 == azul, Me2 == janeiro);
+     (M3 == azul, Me3 == janeiro);
+     (M4 == azul, Me4 == janeiro);
+     (M5 == azul, Me5 == janeiro)),
+
+    jogo(J1), jogo(J2), jogo(J3), jogo(J4), jogo(J5),
+    alldifferent([J1, J2, J3, J4, J5]),
+    J3 == jogodaforca,
+    (J1 == cubovermelho ; J5 == cubovermelho),
+
+    materia(Ma1), materia(Ma2), materia(Ma3), materia(Ma4), materia(Ma5),
+    alldifferent([Ma1, Ma2, Ma3, Ma4, Ma5]),
+    (N1 == joao, Ma1 == historia;
+     N2 == joao, Ma2 == historia;
+     N3 == joao, Ma3 == historia;
+     N4 == joao, Ma4 == historia;
+     N5 == joao, Ma5 == historia),
+
+    suco(S1), suco(S2), suco(S3), suco(S4), suco(S5),
+    alldifferent([S1, S2, S3, S4, S5]),
+    S3 == morango,
+    S1 == limao,
+
+    nl, write('FIM DO MODELO'),
+    nl, write('\n............................\n').
+
+% Fatos
+mochila(amarela).
+mochila(azul).
+mochila(branca).
+mochila(verde).
+mochila(vermelha).
+
+nome(denis).
+nome(joao).
+nome(lenin).
+nome(otavio).
+nome(will).
+
+mes(agosto).
+mes(dezembro).
+mes(janeiro).
+mes(maio).
+mes(setembro).
+
+jogo(tresoumais).
+jogo(cacapalavras).
+jogo(cubovermelho).
+jogo(jogodaforca).
+jogo(probdelogica).
+
+materia(biologia).
+materia(geografia).
+materia(historia).
+materia(matematica).
+materia(portugues).
+
+suco(laranja).
+suco(limao).
+suco(maracuja).
+suco(morango).
+suco(uva).
+
+% Predicados auxiliares
+alldifferent([]).
+alldifferent([H|T]) :-
+    not(member(H, T)),
+    alldifferent(T).
+
+imprime_lista([]) :-
+    write('\n\nFIM do imprime_lista\n').
+imprime_lista([H|T]) :-
+    nl,
+    write(H),
+    write('\n=================================\n'),
+    imprime_lista(T).
